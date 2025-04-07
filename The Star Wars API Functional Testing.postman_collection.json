@@ -1,0 +1,933 @@
+{
+	"info": {
+		"_postman_id": "5474cd8a-1ba8-43ce-92d5-7f81adeac24b",
+		"name": "The Star Wars API Functional Testing",
+		"description": "StartFragment\n\n### Getting started\n\nLet's make our first API request to the Star Wars API!\n\nOpen up a terminal and use [curl](http://curl.haxx.se/) or [httpie](http://httpie.org/) to make an API request for a resource. In the example below, we're trying to get the first planet, Tatooine:\n\n```\nhttp swapi.dev/api/planets/1/\n\n ```\n\nWe'll use [httpie](http://httpie.org/) for our examples as it displays responses nicely and gives us a whole lot more useful information. If you don't want to download httpie, just use the _curl_ command instead.\n\nHere is the response we get:\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"climate\": \"Arid\",\n    \"diameter\": \"10465\",\n    \"gravity\": \"1 standard\",\n    \"name\": \"Tatooine\",\n    \"orbital_period\": \"304\",\n    \"population\": \"200000\",\n    \"residents\": [\n        \"https://swapi.dev/api/people/1/\",\n        \"https://swapi.dev/api/people/2/\",\n        ...\n    ],\n    \"rotation_period\": \"23\",\n    \"surface_water\": \"1\",\n    \"terrain\": \"Dessert\",\n    \"url\": \"https://swapi.dev/api/planets/1/\"\n}\n\n ```\n\nIf your response looks slightly different don't panic. This is probably because more data has been added to swapi since we made this documentation.\n\n### Base URL\n\nThe **Base URL** is the root URL for all of the API, if you ever make a request to swapi and you get back a **404 NOT FOUND** response then check the Base URL first.\n\nThe Base URL for swapi is:\n\n```\nhttps://swapi.dev/api/\n\n ```\n\nThe documentation below assumes you are prepending the Base URL to the endpoints in order to make requests.\n\n### Rate limiting\n\nSwapi has rate limiting to prevent malicious abuse (as if anyone would abuse Star Wars data!) and to make sure our service can handle a potentially large amount of traffic. Rate limiting is done via IP address and is currently limited to 10,000 API request per day. This is enough to request all the data on the website at least ten times over. There should be no reason for hitting the rate limit.\n\n### Authentication\n\nSwapi is a **completely open API**. No authentication is required to query and get data. This also means that we've limited what you can do to just **GET**\\-ing the data. If you find a mistake in the data, then [tweet the author](https://twitter.com/phalt_) or [email him](https://mailto:paulandrewhallett@gmail.com).\n\n### JSON Schema\n\nAll resources support [JSON Schema](https://jsonschema.net/). Making a request to `/api//schema` will give you the details of that resource. This will allow you to programmatically inspect the attributes of that resource and their types.\n\n### Searching\n\nAll resources support a `search` parameter that filters the set of resources returned. This allows you to make queries like:\n\n`https://swapi.dev/api/people/?search=r2`\n\nAll searches will use case-insensitive partial matches on the set of search fields. To see the set of search fields for each resource, check out the individual resource documentation. For more information on advanced search terms see [here](http://www.django-rest-framework.org/api-guide/filtering/#searchfilter).\n\n# Encodings\n\n---\n\nSWAPI provides two encodings for you to render the data with:\n\n### JSON\n\nJSON is the standard data format provided by SWAPI by default.\n\n### Wookiee\n\nWookiee is for our tall hairy allies who speak Wookiee, this encoding is identical to JSON except with wookiee translations.\n\nUsing the wookiee renderer is easy, just append `?format=wookiee` to your urls:\n\n`https://swapi.dev/api/planets/1/?format=wookiee`\n\n# Resources\n\n---\n\n### Root\n\nThe Root resource provides information on all available resources within the API.\n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"films\": \"https://swapi.dev/api/films/\",\n    \"people\": \"https://swapi.dev/api/people/\",\n    \"planets\": \"https://swapi.dev/api/planets/\",\n    \"species\": \"https://swapi.dev/api/species/\",\n    \"starships\": \"https://swapi.dev/api/starships/\",\n    \"vehicles\": \"https://swapi.dev/api/vehicles/\"\n}\n\n ```\n\n**Attributes:**\n\n- `films` _string_ -- The URL root for Film resources\n    \n- `people` _string_ -- The URL root for People resources\n    \n- `planets` _string_ -- The URL root for Planet resources\n    \n- `species` _string_ -- The URL root for Species resources\n    \n- `starships` _string_ -- The URL root for Starships resources\n    \n- `vehicles` _string_ -- The URL root for Vehicles resources\n    \n\nEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24695592",
+		"_collection_link": "https://universal-equinox-751375.postman.co/workspace/bc77a0e3-cd24-4b9b-8cb1-1090d44fd756/collection/24695592-5474cd8a-1ba8-43ce-92d5-7f81adeac24b?action=share&source=collection_link&creator=24695592"
+	},
+	"item": [
+		{
+			"name": "People",
+			"item": [
+				{
+					"name": "People",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify the response body name \",function(){\r",
+									"    var jsondata=pm.response.json();\r",
+									"    pm.expect(jsondata.name).to.be.eql(\"Luke Skywalker\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/1/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "People Schema validation is checked",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const Ajv = require('ajv');\r",
+									"const ajv = new Ajv(); // Instantiate AJV\r",
+									"\r",
+									"// The schema for the \"People\" resource (e.g., Luke Skywalker)\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"birth_year\": { \"type\": \"string\" },\r",
+									"    \"eye_color\": { \"type\": \"string\" },\r",
+									"    \"films\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"string\",\r",
+									"        \"format\": \"uri\"\r",
+									"      }\r",
+									"    },\r",
+									"    \"gender\": { \"type\": \"string\" },\r",
+									"    \"hair_color\": { \"type\": \"string\" },\r",
+									"    \"height\": { \"type\": \"string\" },\r",
+									"    \"homeworld\": { \"type\": \"string\", \"format\": \"uri\" },\r",
+									"    \"mass\": { \"type\": \"string\" },\r",
+									"    \"name\": { \"type\": \"string\" },\r",
+									"    \"skin_color\": { \"type\": \"string\" },\r",
+									"    \"created\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"    \"edited\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"    \"species\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"string\",\r",
+									"        \"format\": \"uri\"\r",
+									"      }\r",
+									"    },\r",
+									"    \"starships\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"string\",\r",
+									"        \"format\": \"uri\"\r",
+									"      }\r",
+									"    },\r",
+									"    \"vehicles\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"string\",\r",
+									"        \"format\": \"uri\"\r",
+									"      }\r",
+									"    },\r",
+									"    \"url\": { \"type\": \"string\", \"format\": \"uri\" }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"birth_year\", \"eye_color\", \"gender\", \"hair_color\", \"height\", \r",
+									"    \"homeworld\", \"mass\", \"name\", \"skin_color\", \"created\", \"edited\", \r",
+									"    \"species\", \"starships\", \"vehicles\", \"url\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"// The actual JSON response data (this would typically be received from the API)\r",
+									"const response = {\r",
+									"  \"birth_year\": \"19 BBY\",\r",
+									"  \"eye_color\": \"Blue\",\r",
+									"  \"films\": [\r",
+									"    \"https://swapi.dev/api/films/1/\"\r",
+									"  ],\r",
+									"  \"gender\": \"Male\",\r",
+									"  \"hair_color\": \"Blond\",\r",
+									"  \"height\": \"172\",\r",
+									"  \"homeworld\": \"https://swapi.dev/api/planets/1/\",\r",
+									"  \"mass\": \"77\",\r",
+									"  \"name\": \"Luke Skywalker\",\r",
+									"  \"skin_color\": \"Fair\",\r",
+									"  \"created\": \"2014-12-09T13:50:51.644000Z\",\r",
+									"  \"edited\": \"2014-12-10T13:52:43.172000Z\",\r",
+									"  \"species\": [\r",
+									"    \"https://swapi.dev/api/species/1/\"\r",
+									"  ],\r",
+									"  \"starships\": [\r",
+									"    \"https://swapi.dev/api/starships/12/\"\r",
+									"  ],\r",
+									"  \"vehicles\": [\r",
+									"    \"https://swapi.dev/api/vehicles/14/\"\r",
+									"  ],\r",
+									"  \"url\": \"https://swapi.dev/api/people/1/\"\r",
+									"};\r",
+									"\r",
+									"// Compile the schema and validate the response\r",
+									"const validate = ajv.compile(schema);\r",
+									"const valid = validate(response);\r",
+									"\r",
+									"if (valid) {\r",
+									"  console.log('Response is valid!');\r",
+									"} else {\r",
+									"  console.log('Response is invalid:', validate.errors);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/1/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource end point is invalid xyz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify the response body name \",function(){\r",
+									"    var jsondata=pm.response.json();\r",
+									"    pm.expect(jsondata.name).to.be.eql(\"Luke Skywalker\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/1/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid method typed get the status code 405",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/1/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource Invalid id is 9999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/9999/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"9999",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource Invalid id is 83",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/83/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"83",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource Invalid id is 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/0/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"0",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a specific people resource Invalid id is 0 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/flims/0/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"flims",
+								"0",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### People\n\nA People resource is an individual person or character within the Star Wars universe.\n\n**Endpoints**\n\n- `/people/` -- get all the people resources\n    \n- `/people/:id/` -- get a specific people resource\n    \n- `/people/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/people/1/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"birth_year\": \"19 BBY\",\n    \"eye_color\": \"Blue\",\n    \"films\": [\n        \"https://swapi.dev/api/films/1/\",\n        ...\n    ],\n    \"gender\": \"Male\",\n    \"hair_color\": \"Blond\",\n    \"height\": \"172\",\n    \"homeworld\": \"https://swapi.dev/api/planets/1/\",\n    \"mass\": \"77\",\n    \"name\": \"Luke Skywalker\",\n    \"skin_color\": \"Fair\",\n    \"created\": \"2014-12-09T13:50:51.644000Z\",\n    \"edited\": \"2014-12-10T13:52:43.172000Z\",\n    \"species\": [\n        \"https://swapi.dev/api/species/1/\"\n    ],\n    \"starships\": [\n        \"https://swapi.dev/api/starships/12/\",\n        ...\n    ],\n    \"url\": \"https://swapi.dev/api/people/1/\",\n    \"vehicles\": [\n        \"https://swapi.dev/api/vehicles/14/\"\n        ...\n    ]\n}\n\n ```\n\n**Attributes:**\n\n- `name` _string_ -- The name of this person.\n    \n- `birth_year` _string_ -- The birth year of the person, using the in-universe standard of **BBY** or **ABY** - Before the Battle of Yavin or After the Battle of Yavin. The Battle of Yavin is a battle that occurs at the end of Star Wars episode IV: A New Hope.\n    \n- `eye_color` _string_ -- The eye color of this person. Will be \"unknown\" if not known or \"n/a\" if the person does not have an eye.\n    \n- `gender` _string_ -- The gender of this person. Either \"Male\", \"Female\" or \"unknown\", \"n/a\" if the person does not have a gender.\n    \n- `hair_color` _string_ -- The hair color of this person. Will be \"unknown\" if not known or \"n/a\" if the person does not have hair.\n    \n- `height` _string_ -- The height of the person in centimeters.\n    \n- `mass` _string_ -- The mass of the person in kilograms.\n    \n- `skin_color` _string_ -- The skin color of this person.\n    \n- `homeworld` _string_ -- The URL of a planet resource, a planet that this person was born on or inhabits.\n    \n- `films` _array_ -- An array of film resource URLs that this person has been in.\n    \n- `species` _array_ -- An array of species resource URLs that this person belongs to.\n    \n- `starships` _array_ -- An array of starship resource URLs that this person has piloted.\n    \n- `vehicles` _array_ -- An array of vehicle resource URLs that this person has piloted.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `name`\n    \n\nEndFragment"
+		},
+		{
+			"name": "Films",
+			"item": [
+				{
+					"name": "Films",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/films/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"films",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### Films\n\nA Film resource is a single film.\n\n**Endpoints**\n\n- `/films/` -- get all the film resources\n    \n- `/films/:id/` -- get a specific film resource\n    \n- `/films/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/films/1/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"characters\": [\n        \"https://swapi.dev/api/people/1/\",\n        ...\n    ],\n    \"created\": \"2014-12-10T14:23:31.880000Z\",\n    \"director\": \"George Lucas\",\n    \"edited\": \"2014-12-12T11:24:39.858000Z\",\n    \"episode_id\": 4,\n    \"opening_crawl\": \"It is a period of civil war.\\n\\nRebel spaceships, striking\\n\\nfrom a hidden base, have won\\n\\ntheir first victory against\\n\\nthe evil Galactic Empire.\\n\\n\\n\\nDuring the battle, Rebel\\n\\nspies managed to steal secret\\r\\nplans to the Empire's\\n\\nultimate weapon, the DEATH\\n\\nSTAR, an armored space\\n\\nstation with enough power\\n\\nto destroy an entire planet.\\n\\n\\n\\nPursued by the Empire's\\n\\nsinister agents, Princess\\n\\nLeia races home aboard her\\n\\nstarship, custodian of the\\n\\nstolen plans that can save her\\n\\npeople and restore\\n\\nfreedom to the galaxy....\",\n    \"planets\": [\n        \"https://swapi.dev/api/planets/1/\",\n        ...\n    ],\n    \"producer\": \"Gary Kurtz, Rick McCallum\",\n    \"release_date\": \"1977-05-25\",\n    \"species\": [\n        \"https://swapi.dev/api/species/1/\",\n        ...\n    ],\n    \"starships\": [\n        \"https://swapi.dev/api/starships/2/\",\n        ...\n    ],\n    \"title\": \"A New Hope\",\n    \"url\": \"https://swapi.dev/api/films/1/\",\n    \"vehicles\": [\n        \"https://swapi.dev/api/vehicles/4/\",\n        ...\n    ]\n}\n\n ```\n\n**Attributes:**\n\n- `title` _string_ -- The title of this film\n    \n- `episode_id` _integer_ -- The episode number of this film.\n    \n- `opening_crawl` _string_ -- The opening paragraphs at the beginning of this film.\n    \n- `director` _string_ -- The name of the director of this film.\n    \n- `producer` _string_ -- The name(s) of the producer(s) of this film. Comma separated.\n    \n- `release_date` _date_ -- The ISO 8601 date format of film release at original creator country.\n    \n- `species` _array_ -- An array of species resource URLs that are in this film.\n    \n- `starships` _array_ -- An array of starship resource URLs that are in this film.\n    \n- `vehicles` _array_ -- An array of vehicle resource URLs that are in this film.\n    \n- `characters` _array_ -- An array of people resource URLs that are in this film.\n    \n- `planets` _array_ -- An array of planet resource URLs that are in this film.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `title`\n    \n\nEndFragment"
+		},
+		{
+			"name": "Starships",
+			"item": [
+				{
+					"name": "starships",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status code response text is OK\",function(){\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"})\r",
+									"pm.test(\"Verify the json body total count is 36\",function(){\r",
+									"    var jsondata=pm.response.json();\r",
+									"    pm.expect(jsondata.count).to.be.eql(36);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify the json body shipname and model \",function(){\r",
+									"    var jsondata=pm.response.json();\r",
+									"      pm.expect(jsondata.results[0].name).to.be.eql(\"CR90 corvette\");\r",
+									"      pm.expect(jsondata.results[0].model).to.be.eql(\"CR90 corvette\");\r",
+									"});\r",
+									"pm.test(\"Verify that each starship has the required properties\", function() {\r",
+									"    var jsondata = pm.response.json();\r",
+									"\r",
+									"    // Loop through each starship in the results array\r",
+									"    jsondata.results.forEach(function(starship) {\r",
+									"        // Check if each starship has the required properties\r",
+									"        pm.expect(starship).to.have.property(\"name\");\r",
+									"        pm.expect(starship).to.have.property(\"model\");\r",
+									"        pm.expect(starship).to.have.property(\"cost_in_credits\");\r",
+									"        pm.expect(starship).to.have.property(\"length\");\r",
+									"        pm.expect(starship).to.have.property(\"starship_class\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/starships/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"starships",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### Starships\n\nA Starship resource is a single transport craft that has hyperdrive capability.\n\n**Endpoints**\n\n- `/starships/` -- get all the starship resources\n    \n- `/starships/:id/` -- get a specific starship resource\n    \n- `/starships/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/starships/9/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"MGLT\": \"10 MGLT\",\n    \"cargo_capacity\": \"1000000000000\",\n    \"consumables\": \"3 years\",\n    \"cost_in_credits\": \"1000000000000\",\n    \"created\": \"2014-12-10T16:36:50.509000Z\",\n    \"crew\": \"342953\",\n    \"edited\": \"2014-12-10T16:36:50.509000Z\",\n    \"hyperdrive_rating\": \"4.0\",\n    \"length\": \"120000\",\n    \"manufacturer\": \"Imperial Department of Military Research, Sienar Fleet Systems\",\n    \"max_atmosphering_speed\": \"n/a\",\n    \"model\": \"DS-1 Orbital Battle Station\",\n    \"name\": \"Death Star\",\n    \"passengers\": \"843342\",\n    \"films\": [\n        \"https://swapi.dev/api/films/1/\"\n    ],\n    \"pilots\": [],\n    \"starship_class\": \"Deep Space Mobile Battlestation\",\n    \"url\": \"https://swapi.dev/api/starships/9/\"\n}\n\n ```\n\n**Attributes:**\n\n- `name` _string_ -- The name of this starship. The common name, such as \"Death Star\".\n    \n- `model` _string_ -- The model or official name of this starship. Such as \"T-65 X-wing\" or \"DS-1 Orbital Battle Station\".\n    \n- `starship_class` _string_ -- The class of this starship, such as \"Starfighter\" or \"Deep Space Mobile Battlestation\"\n    \n- `manufacturer` _string_ -- The manufacturer of this starship. Comma separated if more than one.\n    \n- `cost_in_credits` _string_ -- The cost of this starship new, in galactic credits.\n    \n- `length` _string_ -- The length of this starship in meters.\n    \n- `crew` _string_ -- The number of personnel needed to run or pilot this starship.\n    \n- `passengers` _string_ -- The number of non-essential people this starship can transport.\n    \n- `max_atmosphering_speed` _string_ -- The maximum speed of this starship in the atmosphere. \"N/A\" if this starship is incapable of atmospheric flight.\n    \n- `hyperdrive_rating` _string_ -- The class of this starships hyperdrive.\n    \n- `MGLT` _string_ -- The Maximum number of Megalights this starship can travel in a standard hour. A \"Megalight\" is a standard unit of distance and has never been defined before within the Star Wars universe. This figure is only really useful for measuring the difference in speed of starships. We can assume it is similar to AU, the distance between our Sun (Sol) and Earth.\n    \n- `cargo_capacity` _string_ -- The maximum number of kilograms that this starship can transport.\n    \n- `consumables` \\*string\n    \n- The maximum length of time that this starship can provide consumables for its entire crew without having to resupply.\n    \n- `films` _array_ -- An array of Film URL Resources that this starship has appeared in.\n    \n- `pilots` _array_ -- An array of People URL Resources that this starship has been piloted by.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `name`\n    \n- `model`\n    \n\nEndFragment"
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "vehicles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(20000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/vehicles/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"vehicles",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### Vehicles\n\nA Vehicle resource is a single transport craft that **does not have** hyperdrive capability.\n\n**Endpoints**\n\n- `/vehicles/` -- get all the vehicle resources\n    \n- `/vehicles/:id/` -- get a specific vehicle resource\n    \n- `/vehicles/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/vehicles/4/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"cargo_capacity\": \"50000\",\n    \"consumables\": \"2 months\",\n    \"cost_in_credits\": \"150000\",\n    \"created\": \"2014-12-10T15:36:25.724000Z\",\n    \"crew\": \"46\",\n    \"edited\": \"2014-12-10T15:36:25.724000Z\",\n    \"length\": \"36.8\",\n    \"manufacturer\": \"Corellia Mining Corporation\",\n    \"max_atmosphering_speed\": \"30\",\n    \"model\": \"Digger Crawler\",\n    \"name\": \"Sand Crawler\",\n    \"passengers\": \"30\",\n    \"pilots\": [],\n    \"films\": [\n        \"https://swapi.dev/api/films/1/\"\n    ],\n    \"url\": \"https://swapi.dev/api/vehicles/4/\",\n    \"vehicle_class\": \"wheeled\"\n}\n\n ```\n\n**Attributes:**\n\n- `name` _string_ -- The name of this vehicle. The common name, such as \"Sand Crawler\" or \"Speeder bike\".\n    \n- `model` _string_ -- The model or official name of this vehicle. Such as \"All-Terrain Attack Transport\".\n    \n- `vehicle_class` _string_ -- The class of this vehicle, such as \"Wheeled\" or \"Repulsorcraft\".\n    \n- `manufacturer` _string_ -- The manufacturer of this vehicle. Comma separated if more than one.\n    \n- `length` _string_ -- The length of this vehicle in meters.\n    \n- `cost_in_credits` _string_ -- The cost of this vehicle new, in Galactic Credits.\n    \n- `crew` _string_ -- The number of personnel needed to run or pilot this vehicle.\n    \n- `passengers` _string_ -- The number of non-essential people this vehicle can transport.\n    \n- `max_atmosphering_speed` _string_ -- The maximum speed of this vehicle in the atmosphere.\n    \n- `cargo_capacity` _string_ -- The maximum number of kilograms that this vehicle can transport.\n    \n- `consumables` \\*string\n    \n- The maximum length of time that this vehicle can provide consumables for its entire crew without having to resupply.\n    \n- `films` _array_ -- An array of Film URL Resources that this vehicle has appeared in.\n    \n- `pilots` _array_ -- An array of People URL Resources that this vehicle has been piloted by.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `name`\n    \n- `model`\n    \n\n  \nEndFragment"
+		},
+		{
+			"name": "Species",
+			"item": [
+				{
+					"name": "Species",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.above(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/species/",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"species",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### Species\n\nA Species resource is a type of person or character within the Star Wars Universe.\n\n**Endpoints**\n\n- `/species/` -- get all the species resources\n    \n- `/species/:id/` -- get a specific species resource\n    \n- `/species/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/species/3/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"average_height\": \"2.1\",\n    \"average_lifespan\": \"400\",\n    \"classification\": \"Mammal\",\n    \"created\": \"2014-12-10T16:44:31.486000Z\",\n    \"designation\": \"Sentient\",\n    \"edited\": \"2014-12-10T16:44:31.486000Z\",\n    \"eye_colors\": \"blue, green, yellow, brown, golden, red\",\n    \"hair_colors\": \"black, brown\",\n    \"homeworld\": \"https://swapi.dev/api/planets/14/\",\n    \"language\": \"Shyriiwook\",\n    \"name\": \"Wookie\",\n    \"people\": [\n        \"https://swapi.dev/api/people/13/\"\n    ],\n    \"films\": [\n        \"https://swapi.dev/api/films/1/\",\n        \"https://swapi.dev/api/films/2/\"\n    ],\n    \"skin_colors\": \"gray\",\n    \"url\": \"https://swapi.dev/api/species/3/\"\n}\n\n ```\n\n**Attributes:**\n\n- `name` _string_ -- The name of this species.\n    \n- `classification` _string_ -- The classification of this species, such as \"mammal\" or \"reptile\".\n    \n- `designation` _string_ -- The designation of this species, such as \"sentient\".\n    \n- `average_height` _string_ -- The average height of this species in centimeters.\n    \n- `average_lifespan` _string_ -- The average lifespan of this species in years.\n    \n- `eye_colors` _string_ -- A comma-separated string of common eye colors for this species, \"none\" if this species does not typically have eyes.\n    \n- `hair_colors` _string_ -- A comma-separated string of common hair colors for this species, \"none\" if this species does not typically have hair.\n    \n- `skin_colors` _string_ -- A comma-separated string of common skin colors for this species, \"none\" if this species does not typically have skin.\n    \n- `language` _string_ -- The language commonly spoken by this species.\n    \n- `homeworld` _string_ -- The URL of a planet resource, a planet that this species originates from.\n    \n- `people` _array_ -- An array of People URL Resources that are a part of this species.\n    \n- `films` _array_ -- An array of Film URL Resources that this species has appeared in.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `name`\n    \n\n  \nEndFragment"
+		},
+		{
+			"name": "Planets",
+			"item": [
+				{
+					"name": "Planets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/planets",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"planets"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\n### Planets\n\nA Planet resource is a large mass, planet or planetoid in the Star Wars Universe, at the time of 0 ABY.\n\n**Endpoints**\n\n- `/planets/` -- get all the planets resources\n    \n- `/planets/:id/` -- get a specific planets resource\n    \n- `/planets/schema/` -- view the JSON schema for this resource\n    \n\n**Example request:**\n\n```\nhttp https://swapi.dev/api/planets/1/\n\n ```\n\n**Example response:**\n\n```\nHTTP/1.0 200 OK\nContent-Type: application/json\n{\n    \"climate\": \"Arid\",\n    \"created\": \"2014-12-09T13:50:49.641000Z\",\n    \"diameter\": \"10465\",\n    \"edited\": \"2014-12-15T13:48:16.167217Z\",\n    \"films\": [\n        \"https://swapi.dev/api/films/1/\",\n        ...\n    ],\n    \"gravity\": \"1\",\n    \"name\": \"Tatooine\",\n    \"orbital_period\": \"304\",\n    \"population\": \"120000\",\n    \"residents\": [\n        \"https://swapi.dev/api/people/1/\",\n        ...\n    ],\n    \"rotation_period\": \"23\",\n    \"surface_water\": \"1\",\n    \"terrain\": \"Dessert\",\n    \"url\": \"https://swapi.dev/api/planets/1/\"\n}\n\n ```\n\n**Attributes:**\n\n- `name` _string_ -- The name of this planet.\n    \n- `diameter` _string_ -- The diameter of this planet in kilometers.\n    \n- `rotation_period` _string_ -- The number of standard hours it takes for this planet to complete a single rotation on its axis.\n    \n- `orbital_period` _string_ -- The number of standard days it takes for this planet to complete a single orbit of its local star.\n    \n- `gravity` _string_ -- A number denoting the gravity of this planet, where \"1\" is normal or 1 standard G. \"2\" is twice or 2 standard Gs. \"0.5\" is half or 0.5 standard Gs.\n    \n- `population` _string_ -- The average population of sentient beings inhabiting this planet.\n    \n- `climate` _string_ -- The climate of this planet. Comma separated if diverse.\n    \n- `terrain` _string_ -- The terrain of this planet. Comma separated if diverse.\n    \n- `surface_water` _string_ -- The percentage of the planet surface that is naturally occurring water or bodies of water.\n    \n- `residents` _array_ -- An array of People URL Resources that live on this planet.\n    \n- `films` _array_ -- An array of Film URL Resources that this planet has appeared in.\n    \n- `url` _string_ -- the hypermedia URL of this resource.\n    \n- `created` _string_ -- the ISO 8601 date format of the time that this resource was created.\n    \n- `edited` _string_ -- the ISO 8601 date format of the time that this resource was edited.\n    \n\n**Search Fields:**\n\n- `name`\n    \n\nEndFragment"
+		},
+		{
+			"name": "Loop",
+			"item": [
+				{
+					"name": "People Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Check if the response is valid (200 OK)\r",
+									"if (pm.response.code === 200) {\r",
+									"  // Extract character data (optional: save to a variable)\r",
+									"  const character = pm.response.json();\r",
+									"  console.log(`ID ${pm.environment.get(\"current_id\")}: ${character.name}`);\r",
+									"\r",
+									"  // Save to \"all_characters\" array (optional)\r",
+									"  let allChars = JSON.parse(pm.environment.get(\"all_characters\") || \"[]\");\r",
+									"  allChars.push(character);\r",
+									"  pm.environment.set(\"all_characters\", JSON.stringify(allChars));\r",
+									"} else {\r",
+									"  console.log(`ID ${pm.environment.get(\"current_id\")}: Not found (404)`);\r",
+									"}\r",
+									"\r",
+									"// Increment the ID\r",
+									"const currentId = pm.environment.get(\"current_id\");\r",
+									"const maxId = pm.environment.get(\"max_id\");\r",
+									"\r",
+									"if (currentId < maxId) {\r",
+									"  // Update the ID and rerun the same request\r",
+									"  pm.environment.set(\"current_id\", Number(currentId) + 1);\r",
+									"  postman.setNextRequest(\"Get Character by ID\");\r",
+									"} else {\r",
+									"  // Reset and stop the loop\r",
+									"  pm.environment.unset(\"current_id\");\r",
+									"  pm.environment.unset(\"max_id\");\r",
+									"  postman.setNextRequest(null); // End the workflow\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://swapi.dev/api/people/{{current_id}}",
+							"protocol": "https",
+							"host": [
+								"swapi",
+								"dev"
+							],
+							"path": [
+								"api",
+								"people",
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Base URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// This will send the next request in the collection (use the request name or ID)\r",
+							"Postman.setNextRequest(\"people\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.dev/api/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Base URL Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.dev/api/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "people",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Fields to extract\r",
+							"const fields = [\"name\", \"height\", \"mass\", \"hair_color\", \"skin_color\", \"eye_color\", \"birth_year\", \"gender\"];\r",
+							"\r",
+							"// Assuming the response is in JSON format\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Extract data into an object\r",
+							"const extractedData = {};\r",
+							"fields.forEach(field => {\r",
+							"    extractedData[field] = response[field];\r",
+							"});\r",
+							"\r",
+							"// Log the extracted data\r",
+							"console.log(extractedData);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.dev/api/people/{{ID}}",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						"people",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "current_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "max_id",
+			"value": "82",
+			"type": "string"
+		}
+	]
+}
