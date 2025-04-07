@@ -27,4 +27,4 @@ jobs:
 
     - name: Run Postman Tests
       run: |
-        newman run path\to\your\star-wars-collection.json -e path\to\your\star-wars-environment.json
+        newman run C:\Users\xmedia\Downloads\The Star Wars API Functional Testing.postman_collection.json 
