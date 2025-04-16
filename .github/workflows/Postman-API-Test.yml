@@ -2,7 +2,7 @@ name: Run Star Wars API Tests
 
 on:
   push:
-    branches: [ main ]
+    branches:  main 
 
 jobs:
   test:
