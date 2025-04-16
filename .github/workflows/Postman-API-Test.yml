@@ -1,30 +1,21 @@
-name: Postman API Test
+name: Run Star Wars API Tests
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   test:
-    runs-on: windows-latest  # Use windows-latest for Windows runners
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
     - name: Install Newman
-      run: |
-        npm install -g newman
+      run: npm install -g newman
 
-    - name: Run Postman Tests
+    - name: Run Star Wars Collection
       run: |
-        newman run C:\Users\xmedia\Downloads\The Star Wars API Functional Testing.postman_collection.json 
+        newman run starwars_api_tests.postman_collection.json \
+          --reporters cli
