@@ -1,38 +1,40 @@
 # StarWar-API-Functionality-Testing
-API testing and exploration using the Star Wars API (SWAPI). This repository includes various tests for interacting with resources like planets, people, films, and starships. It contains examples using tools like Postman, curl, and HTTPie for validating API responses and ensuring correct functionality during testing
-StartFragment
-Getting started
-Let's make our first API request to the Star Wars API!
-Open up a terminal and use curl or httpie to make an API request for a resource. In the example below, we're trying to get the first planet, Tatooine:
 
+This repository contains **API testing** and **exploration** using the **Star Wars API (SWAPI)**. The purpose of this project is to validate the functionality, accuracy, and performance of the various Star Wars API endpoints, including resources like **planets**, **people**, **films**, and **starships**.
 
-Plain Text
+The repository contains examples of making requests using tools like **Postman**, **curl**, and **HTTPie** to validate API responses and ensure that the API is functioning correctly.
 
+---
 
+## 🛠️ Features
 
+- **API Exploration**: Learn how to interact with the Star Wars API by exploring resources like planets, people, films, species, vehicles, and starships.
+- **Automated Testing**: Includes test cases for validating API responses such as status codes, response times, and data structure validation.
+- **Request Examples**: Usage of **Postman**, **curl**, and **HTTPie** to make API requests and test endpoints.
+- **Rate Limiting Awareness**: Acknowledges that the Star Wars API has a rate limit of **10,000 requests per day** to avoid abuse.
+- **Search Functionality**: Examples of using the search query parameter to filter and retrieve specific resources (e.g., searching for a specific character or planet).
+- **JSON and Wookiee Formats**: Demonstrates how to request responses in both standard **JSON** format and **Wookiee** format for Star Wars enthusiasts.
 
+---
 
+## 🚀 Getting Started
 
+Let's make our first API request to the **Star Wars API (SWAPI)**!
 
+Open up your terminal and use **curl** or **HTTPie** to make an API request for a resource. For example, we can retrieve details for the first planet, **Tatooine**, using the following commands.
 
-http swapi.dev/api/planets/1/
+### Using HTTPie:
+```bash
+http https://swapi.dev/api/planets/1/
+```
 
+### Using cURL:
+```bash
+curl https://swapi.dev/api/planets/1/
+```
 
-We'll use httpie for our examples as it displays responses nicely and gives us a whole lot more useful information. If you don't want to download httpie, just use the curl command instead.
-Here is the response we get:
-
-
-Plain Text
-
-
-
-
-
-
-
-
-HTTP/1.0 200 OK
-Content-Type: application/json
+#### Sample Response:
+```json
 {
     "climate": "Arid",
     "diameter": "10465",
@@ -42,109 +44,129 @@ Content-Type: application/json
     "population": "200000",
     "residents": [
         "https://swapi.dev/api/people/1/",
-        "https://swapi.dev/api/people/2/",
-        ...
+        "https://swapi.dev/api/people/2/"
     ],
     "rotation_period": "23",
     "surface_water": "1",
-    "terrain": "Dessert",
+    "terrain": "Desert",
     "url": "https://swapi.dev/api/planets/1/"
 }
+```
 
+---
 
-If your response looks slightly different don't panic. This is probably because more data has been added to swapi since we made this documentation.
-Base URL
-The Base URL is the root URL for all of the API, if you ever make a request to swapi and you get back a 404 NOT FOUND response then check the Base URL first.
-The Base URL for swapi is:
+## 🌍 Base URL
 
+The **Base URL** for all SWAPI requests is:
 
-Plain Text
-
-
-
-
-
-
-
-
+```plaintext
 https://swapi.dev/api/
+```
 
+Make sure to prepend this base URL to all API endpoints when constructing your requests.
 
-The documentation below assumes you are prepending the Base URL to the endpoints in order to make requests.
-Rate limiting
-Swapi has rate limiting to prevent malicious abuse (as if anyone would abuse Star Wars data!) and to make sure our service can handle a potentially large amount of traffic. Rate limiting is done via IP address and is currently limited to 10,000 API request per day. This is enough to request all the data on the website at least ten times over. There should be no reason for hitting the rate limit.
-Authentication
-Swapi is a completely open API. No authentication is required to query and get data. This also means that we've limited what you can do to just GET-ing the data. If you find a mistake in the data, then tweet the author or email him.
-JSON Schema
-All resources support JSON Schema. Making a request to /api//schema will give you the details of that resource. This will allow you to programmatically inspect the attributes of that resource and their types.
-Searching
-All resources support a search parameter that filters the set of resources returned. This allows you to make queries like:
-https://swapi.dev/api/people/?search=r2
-All searches will use case-insensitive partial matches on the set of search fields. To see the set of search fields for each resource, check out the individual resource documentation. For more information on advanced search terms see here.
-Encodings
+---
 
+## ⚠️ Rate Limiting
 
+The **Star Wars API** has a rate limit to prevent abuse and ensure fair use. The current limit is **10,000 requests per day** per IP address. This should be more than sufficient for most use cases, but keep this in mind when making large numbers of requests.
 
-SWAPI provides two encodings for you to render the data with:
-JSON
-JSON is the standard data format provided by SWAPI by default.
-Wookiee
-Wookiee is for our tall hairy allies who speak Wookiee, this encoding is identical to JSON except with wookiee translations.
-Using the wookiee renderer is easy, just append ?format=wookiee to your urls:
-https://swapi.dev/api/planets/1/?format=wookiee
-Resources
+---
 
+## 🔐 Authentication
 
+SWAPI is an **open API** and does **not require authentication**. You can freely access the data with any valid HTTP GET request. However, you are limited to read-only operations (GET) and cannot modify the data.
 
-Root
-The Root resource provides information on all available resources within the API.
-Example request:
+---
 
+## 🔎 Searching Resources
 
-Plain Text
+Each resource (planets, people, films, etc.) supports a **search** parameter. This allows you to filter the dataset by searching for specific keywords.
 
+For example, to search for people related to "Luke," you can make a request like:
 
+```bash
+http https://swapi.dev/api/people/?search=luke
+```
 
+This will return a list of people whose names match "Luke" (e.g., Luke Skywalker).
 
+---
 
+## 🧬 JSON Schema
 
+The API supports **JSON Schema** for every resource, which allows you to programmatically inspect the attributes and their types for each resource. You can retrieve the schema for any resource by appending `/schema` to the endpoint.
 
+For example:
+```bash
+http https://swapi.dev/api/planets/schema
+```
 
+---
+
+## 🛸 Wookiee Format
+
+In addition to the default **JSON** format, SWAPI also offers a **Wookiee** format, which translates the response into Wookiee language (for Star Wars fans!). To request Wookiee format, append `?format=wookiee` to the URL.
+
+For example:
+```bash
+http https://swapi.dev/api/planets/1/?format=wookiee
+```
+
+---
+
+## 📚 Available Resources
+
+Here are the main resources provided by the API:
+
+- **Films**: `/films/` - List of Star Wars films.
+- **People**: `/people/` - List of characters (e.g., Luke Skywalker, Han Solo).
+- **Planets**: `/planets/` - List of planets (e.g., Tatooine, Alderaan).
+- **Species**: `/species/` - List of species (e.g., Human, Wookiee).
+- **Starships**: `/starships/` - List of starships (e.g., X-wing, Millennium Falcon).
+- **Vehicles**: `/vehicles/` - List of vehicles (e.g., Speeder bike, AT-AT).
+
+You can explore the available resources by making requests to the **Root** endpoint:
+
+```bash
 http https://swapi.dev/api/
+```
 
+This will return a list of all available resources.
 
-Example response:
+---
 
+## 🧑‍💻 API Testing with Postman
 
-Plain Text
+This repository includes **Postman collections** for testing various SWAPI endpoints. These collections provide ready-to-use requests for testing different resources and verifying that the API is returning the expected responses.
 
+To get started with Postman:
 
+1. Download and install [Postman](https://www.postman.com/downloads/).
+2. Import the provided Postman collection from this repository into Postman.
+3. Run the requests to verify the API responses.
 
+---
 
+## 🧑‍🏫 Example Test Cases
 
+Here are a few example test cases that are included in the repository:
 
+- **Test 1**: Verify that the `/people/` endpoint returns a **200 OK** response.
+- **Test 2**: Ensure that the `Tatooine` planet exists in the `/planets/` endpoint.
+- **Test 3**: Validate that the search functionality works for people with the name "Luke."
+- **Test 4**: Check if the API handles invalid endpoints (e.g., `/people/9999/`).
 
+---
 
-HTTP/1.0 200 OK
-Content-Type: application/json
-{
-    "films": "https://swapi.dev/api/films/",
-    "people": "https://swapi.dev/api/people/",
-    "planets": "https://swapi.dev/api/planets/",
-    "species": "https://swapi.dev/api/species/",
-    "starships": "https://swapi.dev/api/starships/",
-    "vehicles": "https://swapi.dev/api/vehicles/"
-}
+## 🤝 Contributing
 
+Contributions to this repository are welcome! If you'd like to add more test cases or improve the existing ones, feel free to submit a pull request. Here's how you can contribute:
 
-Attributes:
-films string -- The URL root for Film resources
-people string -- The URL root for People resources
-planets string -- The URL root for Planet resources
-species string -- The URL root for Species resources
-starships string -- The URL root for Starships resources
-vehicles string -- The URL root for Vehicles resources
+1. Fork the repository.
+2. Create a new branch for your changes.
+3. Make your changes and commit them.
+4. Push the changes to your forked repository.
+5. Submit a pull request for review.
 
-EndFragment
-
-
+---
